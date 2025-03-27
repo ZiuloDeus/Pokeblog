@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon XY - Iniciales</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-color: #ffcc00;
+            background-image: url('https://www.pokemon.com/static-assets/content-assets/cms2/img/misc/virtual-backgrounds/masters/forest.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .header {
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            padding: 20px;
+            background: linear-gradient(90deg, #ff0000, #ffcb05);
+            text-shadow: 2px 2px 4px black;
+        }
+        .logo img {
+            width: 200px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255, 204, 0, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: auto;
+            width: 50%;
+        }
+        .pokemon-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .pokemon {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px solid #ffcb05;
+            border-radius: 10px;
+            background-color: #ffee99;
+        }
+        .pokemon img {
+            width: 180px;
+            margin-right: 20px;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            opacity: 1;
+        }
+        .pokemon img.fade-out {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        button {
+            padding: 10px;
+            margin: 5px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        button:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Pokeblog</div>
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pokémon_logo.svg">
+    </div>
+    <div class="container">
+        <div class="pokemon-list">
+            <div class="pokemon" id="chespin">
+                <img src="" alt="Chespin">
+                <div>
+                    <h3></h3>
+                    <p class="tipo"></p>
+                    <button onclick="evolucionar('chespin', 1)">Evolucionar</button>
+                    <button onclick="evolucionar('chespin', -1)">Retroceder</button>
+                </div>
+            </div>
+            <div class="pokemon" id="fennekin">
+                <img src="" alt="Fennekin">
+                <div>
+                    <h3></h3>
+                    <p class="tipo"></p>
+                    <button onclick="evolucionar('fennekin', 1)">Evolucionar</button>
+                    <button onclick="evolucionar('fennekin', -1)">Retroceder</button>
+                </div>
+            </div>
+            <div class="pokemon" id="froakie">
+                <img src="" alt="Froakie">
+                <div>
+                    <h3></h3>
+                    <p class="tipo"></p>
+                    <button onclick="evolucionar('froakie', 1)">Evolucionar</button>
+                    <button onclick="evolucionar('froakie', -1)">Retroceder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const evoluciones = {
+            chespin: [
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/650.png", nombre: "Chespin", tipo: "Planta" },
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/651.png", nombre: "Quilladin", tipo: "Planta" },
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/652.png", nombre: "Chesnaught", tipo: "Planta/Lucha" }
+            ],
+            fennekin: [
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/653.png", nombre: "Fennekin", tipo: "Fuego" },
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/654.png", nombre: "Braixen", tipo: "Fuego" },
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/655.png", nombre: "Delphox", tipo: "Fuego/Psíquico" }
+            ],
+            froakie: [
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/656.png", nombre: "Froakie", tipo: "Agua" },
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/657.png", nombre: "Frogadier", tipo: "Agua" },
+                { img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png", nombre: "Greninja", tipo: "Agua/Siniestro" }
+            ]
+        };
+        
+        let indices = { chespin: 0, fennekin: 0, froakie: 0 };
+
+        function evolucionar(pokemon, direccion) {
+            let pokeDiv = document.getElementById(pokemon);
+            let imgElement = pokeDiv.querySelector("img");
+            imgElement.classList.add("fade-out");
+            setTimeout(() => {
+                let idx = indices[pokemon] + direccion;
+                if (idx >= 0 && idx < evoluciones[pokemon].length) {
+                    indices[pokemon] = idx;
+                    imgElement.src = evoluciones[pokemon][idx].img;
+                    pokeDiv.querySelector("h3").textContent = evoluciones[pokemon][idx].nombre;
+                    pokeDiv.querySelector(".tipo").textContent = "Tipo: " + evoluciones[pokemon][idx].tipo;
+                }
+                imgElement.classList.remove("fade-out");
+            }, 500);
+        }
+        
+        Object.keys(evoluciones).forEach(pokemon => evolucionar(pokemon, 0));
+    </script>
+</body>
+</html>
